@@ -1,0 +1,63 @@
+﻿@model IEnumerable<TheContactPro.ElementoDeCotizacion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Cantidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrecioDeVenta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrecioTotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cotizacion.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Producto.Nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cantidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrecioDeVenta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subtotal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrecioTotal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cotizacion.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Producto.Nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ElementoDeCotizacionId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ElementoDeCotizacionId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ElementoDeCotizacionId })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ContactProModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cotizacion">
+          <Key>
+            <PropertyRef Name="CotizacionId" />
+          </Key>
+          <Property Name="CotizacionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nchar" MaxLength="50" />
+          <Property Name="CuentaId" Type="int" />
+          <Property Name="Descripcion" Type="nchar" MaxLength="50" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="OportunidadId" Type="int" />
+        </EntityType>
+        <EntityType Name="Cuenta">
+          <Key>
+            <PropertyRef Name="CuentaId" />
+          </Key>
+          <Property Name="CuentaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nchar" MaxLength="50" />
+          <Property Name="Telefono" Type="nchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ElementoDeCotizacion">
+          <Key>
+            <PropertyRef Name="ElementoDeCotizacionId" />
+          </Key>
+          <Property Name="ElementoDeCotizacionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductoId" Type="int" />
+          <Property Name="Cantidad" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="PrecioDeVenta" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Subtotal" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="PrecioTotal" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="CotizacionId" Type="int" />
+        </EntityType>
+        <EntityType Name="Oportunidad">
+          <Key>
+            <PropertyRef Name="OportunidadId" />
+          </Key>
+          <Property Name="OportunidadId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CuentaId" Type="int" />
+          <Property Name="Nombre" Type="nchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="ProductoId" />
+          </Key>
+          <Property Name="ProductoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Cotizacion_Cuenta">
+          <End Role="Cuenta" Type="Self.Cuenta" Multiplicity="0..1" />
+          <End Role="Cotizacion" Type="Self.Cotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cuenta">
+              <PropertyRef Name="CuentaId" />
+            </Principal>
+            <Dependent Role="Cotizacion">
+              <PropertyRef Name="CuentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cotizacion_Oportunidad">
+          <End Role="Oportunidad" Type="Self.Oportunidad" Multiplicity="0..1" />
+          <End Role="Cotizacion" Type="Self.Cotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Oportunidad">
+              <PropertyRef Name="OportunidadId" />
+            </Principal>
+            <Dependent Role="Cotizacion">
+              <PropertyRef Name="OportunidadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElementoDeCotizacion_Cotizacion">
+          <End Role="Cotizacion" Type="Self.Cotizacion" Multiplicity="0..1" />
+          <End Role="ElementoDeCotizacion" Type="Self.ElementoDeCotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cotizacion">
+              <PropertyRef Name="CotizacionId" />
+            </Principal>
+            <Dependent Role="ElementoDeCotizacion">
+              <PropertyRef Name="CotizacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElementoDeCotizacion_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="ElementoDeCotizacion" Type="Self.ElementoDeCotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoId" />
+            </Principal>
+            <Dependent Role="ElementoDeCotizacion">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oportunidad_Cuenta">
+          <End Role="Cuenta" Type="Self.Cuenta" Multiplicity="0..1" />
+          <End Role="Oportunidad" Type="Self.Oportunidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cuenta">
+              <PropertyRef Name="CuentaId" />
+            </Principal>
+            <Dependent Role="Oportunidad">
+              <PropertyRef Name="CuentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ContactProModelStoreContainer">
+          <EntitySet Name="Cotizacion" EntityType="Self.Cotizacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cuenta" EntityType="Self.Cuenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ElementoDeCotizacion" EntityType="Self.ElementoDeCotizacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Oportunidad" EntityType="Self.Oportunidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cotizacion_Cuenta" Association="Self.FK_Cotizacion_Cuenta">
+            <End Role="Cuenta" EntitySet="Cuenta" />
+            <End Role="Cotizacion" EntitySet="Cotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cotizacion_Oportunidad" Association="Self.FK_Cotizacion_Oportunidad">
+            <End Role="Oportunidad" EntitySet="Oportunidad" />
+            <End Role="Cotizacion" EntitySet="Cotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElementoDeCotizacion_Cotizacion" Association="Self.FK_ElementoDeCotizacion_Cotizacion">
+            <End Role="Cotizacion" EntitySet="Cotizacion" />
+            <End Role="ElementoDeCotizacion" EntitySet="ElementoDeCotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElementoDeCotizacion_Producto" Association="Self.FK_ElementoDeCotizacion_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="ElementoDeCotizacion" EntitySet="ElementoDeCotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oportunidad_Cuenta" Association="Self.FK_Oportunidad_Cuenta">
+            <End Role="Cuenta" EntitySet="Cuenta" />
+            <End Role="Oportunidad" EntitySet="Oportunidad" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ContactProModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cotizacion">
+          <Key>
+            <PropertyRef Name="CotizacionId" />
+          </Key>
+          <Property Name="CotizacionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="CuentaId" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Total" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="OportunidadId" Type="Int32" />
+          <NavigationProperty Name="Cuenta" Relationship="Self.FK_Cotizacion_Cuenta" FromRole="Cotizacion" ToRole="Cuenta" />
+          <NavigationProperty Name="Oportunidad" Relationship="Self.FK_Cotizacion_Oportunidad" FromRole="Cotizacion" ToRole="Oportunidad" />
+          <NavigationProperty Name="ElementoDeCotizacion" Relationship="Self.FK_ElementoDeCotizacion_Cotizacion" FromRole="Cotizacion" ToRole="ElementoDeCotizacion" />
+        </EntityType>
+        <EntityType Name="Cuenta">
+          <Key>
+            <PropertyRef Name="CuentaId" />
+          </Key>
+          <Property Name="CuentaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Cotizacion" Relationship="Self.FK_Cotizacion_Cuenta" FromRole="Cuenta" ToRole="Cotizacion" />
+          <NavigationProperty Name="Oportunidad" Relationship="Self.FK_Oportunidad_Cuenta" FromRole="Cuenta" ToRole="Oportunidad" />
+        </EntityType>
+        <EntityType Name="ElementoDeCotizacion">
+          <Key>
+            <PropertyRef Name="ElementoDeCotizacionId" />
+          </Key>
+          <Property Name="ElementoDeCotizacionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductoId" Type="Int32" />
+          <Property Name="Cantidad" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PrecioDeVenta" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Subtotal" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PrecioTotal" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CotizacionId" Type="Int32" />
+          <NavigationProperty Name="Cotizacion" Relationship="Self.FK_ElementoDeCotizacion_Cotizacion" FromRole="ElementoDeCotizacion" ToRole="Cotizacion" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_ElementoDeCotizacion_Producto" FromRole="ElementoDeCotizacion" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Oportunidad">
+          <Key>
+            <PropertyRef Name="OportunidadId" />
+          </Key>
+          <Property Name="OportunidadId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CuentaId" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Cotizacion" Relationship="Self.FK_Cotizacion_Oportunidad" FromRole="Oportunidad" ToRole="Cotizacion" />
+          <NavigationProperty Name="Cuenta" Relationship="Self.FK_Oportunidad_Cuenta" FromRole="Oportunidad" ToRole="Cuenta" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="ProductoId" />
+          </Key>
+          <Property Name="ProductoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ElementoDeCotizacion" Relationship="Self.FK_ElementoDeCotizacion_Producto" FromRole="Producto" ToRole="ElementoDeCotizacion" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Cotizacion_Cuenta">
+          <End Role="Cuenta" Type="Self.Cuenta" Multiplicity="0..1" />
+          <End Role="Cotizacion" Type="Self.Cotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cuenta">
+              <PropertyRef Name="CuentaId" />
+            </Principal>
+            <Dependent Role="Cotizacion">
+              <PropertyRef Name="CuentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cotizacion_Oportunidad">
+          <End Role="Oportunidad" Type="Self.Oportunidad" Multiplicity="0..1" />
+          <End Role="Cotizacion" Type="Self.Cotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Oportunidad">
+              <PropertyRef Name="OportunidadId" />
+            </Principal>
+            <Dependent Role="Cotizacion">
+              <PropertyRef Name="OportunidadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElementoDeCotizacion_Cotizacion">
+          <End Role="Cotizacion" Type="Self.Cotizacion" Multiplicity="0..1" />
+          <End Role="ElementoDeCotizacion" Type="Self.ElementoDeCotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cotizacion">
+              <PropertyRef Name="CotizacionId" />
+            </Principal>
+            <Dependent Role="ElementoDeCotizacion">
+              <PropertyRef Name="CotizacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oportunidad_Cuenta">
+          <End Role="Cuenta" Type="Self.Cuenta" Multiplicity="0..1" />
+          <End Role="Oportunidad" Type="Self.Oportunidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cuenta">
+              <PropertyRef Name="CuentaId" />
+            </Principal>
+            <Dependent Role="Oportunidad">
+              <PropertyRef Name="CuentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElementoDeCotizacion_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="ElementoDeCotizacion" Type="Self.ElementoDeCotizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoId" />
+            </Principal>
+            <Dependent Role="ElementoDeCotizacion">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ContactProEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cotizacion" EntityType="Self.Cotizacion" />
+          <EntitySet Name="Cuenta" EntityType="Self.Cuenta" />
+          <EntitySet Name="ElementoDeCotizacion" EntityType="Self.ElementoDeCotizacion" />
+          <EntitySet Name="Oportunidad" EntityType="Self.Oportunidad" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Cotizacion_Cuenta" Association="Self.FK_Cotizacion_Cuenta">
+            <End Role="Cuenta" EntitySet="Cuenta" />
+            <End Role="Cotizacion" EntitySet="Cotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cotizacion_Oportunidad" Association="Self.FK_Cotizacion_Oportunidad">
+            <End Role="Oportunidad" EntitySet="Oportunidad" />
+            <End Role="Cotizacion" EntitySet="Cotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElementoDeCotizacion_Cotizacion" Association="Self.FK_ElementoDeCotizacion_Cotizacion">
+            <End Role="Cotizacion" EntitySet="Cotizacion" />
+            <End Role="ElementoDeCotizacion" EntitySet="ElementoDeCotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oportunidad_Cuenta" Association="Self.FK_Oportunidad_Cuenta">
+            <End Role="Cuenta" EntitySet="Cuenta" />
+            <End Role="Oportunidad" EntitySet="Oportunidad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElementoDeCotizacion_Producto" Association="Self.FK_ElementoDeCotizacion_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="ElementoDeCotizacion" EntitySet="ElementoDeCotizacion" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ContactProModelStoreContainer" CdmEntityContainer="ContactProEntities">
+          <EntitySetMapping Name="Cotizacion">
+            <EntityTypeMapping TypeName="ContactProModel.Cotizacion">
+              <MappingFragment StoreEntitySet="Cotizacion">
+                <ScalarProperty Name="CotizacionId" ColumnName="CotizacionId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="CuentaId" ColumnName="CuentaId" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="OportunidadId" ColumnName="OportunidadId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cuenta">
+            <EntityTypeMapping TypeName="ContactProModel.Cuenta">
+              <MappingFragment StoreEntitySet="Cuenta">
+                <ScalarProperty Name="CuentaId" ColumnName="CuentaId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ElementoDeCotizacion">
+            <EntityTypeMapping TypeName="ContactProModel.ElementoDeCotizacion">
+              <MappingFragment StoreEntitySet="ElementoDeCotizacion">
+                <ScalarProperty Name="ElementoDeCotizacionId" ColumnName="ElementoDeCotizacionId" />
+                <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="PrecioDeVenta" ColumnName="PrecioDeVenta" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="PrecioTotal" ColumnName="PrecioTotal" />
+                <ScalarProperty Name="CotizacionId" ColumnName="CotizacionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Oportunidad">
+            <EntityTypeMapping TypeName="ContactProModel.Oportunidad">
+              <MappingFragment StoreEntitySet="Oportunidad">
+                <ScalarProperty Name="OportunidadId" ColumnName="OportunidadId" />
+                <ScalarProperty Name="CuentaId" ColumnName="CuentaId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producto">
+            <EntityTypeMapping TypeName="ContactProModel.Producto">
+              <MappingFragment StoreEntitySet="Producto">
+                <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ContactProModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
